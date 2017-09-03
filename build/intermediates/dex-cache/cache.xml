@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="true"
+        jar="/Users/iniyk/Desktop/git/RunnerRouter/app/libs/AMap_Search_V5.3.1_20170817.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="b4e1d1d93f686f1a6efe4e49d798b27801d4d301">
+        <dex dex="/Users/iniyk/Desktop/git/RunnerRouter/app/build/intermediates/transforms/dex/debug/folders/1000/2/AMap_Search_V5.3.1_20170817_f26e017b221a1ef058b78d7bde43ef88267d3a39/classes.dex" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/iniyk/Desktop/git/RunnerRouter/app/libs/Android_Map3D_SDK_V5.3.0_20170815.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.0"
+        sha1="8e1bcab49134edfa6f74440488dfff14460d3a12">
+        <dex dex="/Users/iniyk/Desktop/git/RunnerRouter/app/build/intermediates/pre-dexed/debug/Android_Map3D_SDK_V5.3.0_20170815_af9f386b6db794a4cf62684ca4f9810f62cbaaae.jar" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/iniyk/Desktop/git/RunnerRouter/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="d03d7af8efad8857aa89ea303e81223b972929fc">
+        <dex dex="/Users/iniyk/Desktop/git/RunnerRouter/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_bb88140c664b4cd829c04e7dc6c8f885ceebeb6e/classes.dex" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/iniyk/Desktop/git/RunnerRouter/app/libs/Amap_2DMap_V5.2.0_20170627.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.0"
+        sha1="15d491b0412f57284157d356bfcb9d6ea017226f">
+        <dex dex="/Users/iniyk/Desktop/git/RunnerRouter/app/build/intermediates/pre-dexed/debug/Amap_2DMap_V5.2.0_20170627_d9afb8907a03eeab0122954e2ac65d27f885f337.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/iniyk/Desktop/git/RunnerRouter/app/libs/AMap_Search_V5.3.1_20170817.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.0"
+        sha1="b4e1d1d93f686f1a6efe4e49d798b27801d4d301">
+        <dex dex="/Users/iniyk/Desktop/git/RunnerRouter/app/build/intermediates/pre-dexed/debug/AMap_Search_V5.3.1_20170817_f26e017b221a1ef058b78d7bde43ef88267d3a39.jar" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/iniyk/Desktop/git/RunnerRouter/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="3be78ebc2706b2e1fe2f12d5726887a92d6c183b">
+        <dex dex="/Users/iniyk/Desktop/git/RunnerRouter/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_475a3b684d31746bbadc7059e714b93fe379b2da/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/iniyk/Desktop/git/RunnerRouter/app/libs/Amap_2DMap_V5.2.0_20170627.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="15d491b0412f57284157d356bfcb9d6ea017226f">
+        <dex dex="/Users/iniyk/Desktop/git/RunnerRouter/app/build/intermediates/transforms/dex/debug/folders/1000/2/Amap_2DMap_V5.2.0_20170627_d9afb8907a03eeab0122954e2ac65d27f885f337/classes.dex" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/iniyk/Desktop/git/RunnerRouter/app/libs/AMap_Location_V3.5.0_20170731.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.0"
+        sha1="a02816310bcf897ef35496950110a65b495574a7">
+        <dex dex="/Users/iniyk/Desktop/git/RunnerRouter/app/build/intermediates/pre-dexed/debug/AMap_Location_V3.5.0_20170731_1322bbfbc99807cdcb9b9dd142ffb69e194b6870.jar" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/iniyk/Desktop/git/RunnerRouter/app/libs/AMap_Location_V3.5.0_20170731.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="a02816310bcf897ef35496950110a65b495574a7">
+        <dex dex="/Users/iniyk/Desktop/git/RunnerRouter/app/build/intermediates/transforms/dex/debug/folders/1000/2/AMap_Location_V3.5.0_20170731_1322bbfbc99807cdcb9b9dd142ffb69e194b6870/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/iniyk/Desktop/git/RunnerRouter/app/libs/Android_Map3D_SDK_V5.3.0_20170815.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="8e1bcab49134edfa6f74440488dfff14460d3a12">
+        <dex dex="/Users/iniyk/Desktop/git/RunnerRouter/app/build/intermediates/transforms/dex/debug/folders/1000/2/Android_Map3D_SDK_V5.3.0_20170815_af9f386b6db794a4cf62684ca4f9810f62cbaaae/classes.dex" />
+    </item>
+
+</items>
