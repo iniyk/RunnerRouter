@@ -23,14 +23,19 @@ import java.util.ArrayList;
 
 import static android.Manifest.permission.*;
 
+import com.amap.api.services.core.*;
+import com.iniyk.runnerrouter.CallBack;
+import com.iniyk.runnerrouter.RouterHelper;
+
 public class MainActivity extends AppCompatActivity {
     private String cityName = null;
+    private LatLng myLocation = null;
     private final static int ACCESS_STATE_START = 100;
     private int access_state_mask = 0;
     private int access_state = 0;
-    private ArrayList<LatLng> router;
-    private ArrayList<Marker> routerMarker;
+    private RouterHelper routerHelper = null;
     private Polyline routerView = null;
+    private ArrayList<Marker> routerMarker = null;
 
     private String[] permissions = {
             INTERNET,
@@ -45,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
     public MapView mMapView = null;
     private AMap aMap = null;
-    private Button btnMyLocation = null, btnRevert = null, btnClear = null;
+    private Button btnRevert = null, btnClear = null;
     private TextView txtDistance= null;
     //声明AMapLocationClient类对象
     public AMapLocationClient mLocationClient = null;
@@ -62,12 +67,16 @@ public class MainActivity extends AppCompatActivity {
                     Log.i("Location", "Now Location is Lat : " + aMapLocation.getLatitude() +
                             "Log : " + aMapLocation.getLongitude());
 
-                    LatLng myLatLng = new LatLng(aMapLocation.getLatitude(), aMapLocation.getLongitude());
+                    if (myLocation == null) {
+                        myLocation = new LatLng(aMapLocation.getLatitude(), aMapLocation.getLongitude());
 
-                    aMap.moveCamera(CameraUpdateFactory.zoomTo(17)); // 将地图移动到定位点
-                    aMap.moveCamera(CameraUpdateFactory.changeLatLng(myLatLng)); // 点击定位按钮 能够将地图的中心移动到定位点
+                        aMap.moveCamera(CameraUpdateFactory.zoomTo(17)); // 将地图移动到定位点
+                        aMap.moveCamera(CameraUpdateFactory.changeLatLng(myLocation)); // 点击定位按钮 能够将地图的中心移动到定位点
+                    } else {
+                        myLocation = new LatLng(aMapLocation.getLatitude(), aMapLocation.getLongitude());
+                    }
 
-                    Marker myLocMarker = aMap.addMarker(new MarkerOptions().position(myLatLng).title("我的位置"));
+                    Marker myLocMarker = aMap.addMarker(new MarkerOptions().position(myLocation).title("我的位置"));
                 }else {
                     //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
                     Log.e("AmapError","location Error, ErrCode:"
@@ -80,13 +89,26 @@ public class MainActivity extends AppCompatActivity {
 
     public OnMapLongClickListener onMapLongClickListener = new AMap.OnMapLongClickListener() {
         @Override
-        public void onMapLongClick(LatLng point) {
-            router.add(point);
-            Marker marker = aMap.addMarker(new MarkerOptions().position(point).title("路径点" + router.size()));
-            routerMarker.add(marker);
-            calcDistance();
-            Log.i("LongClickListener", "Lat : " + point.latitude +
-                    "Log : " + point.longitude);
+        public void onMapLongClick(final LatLng point) {
+            try {
+                routerHelper.SetNextPoint(point, "onRoad", new CallBack() {
+                    @Override
+                    public void CallBackFunc() {
+                        Marker marker = aMap.addMarker(new MarkerOptions()
+                                .position(point)
+                                .title(routerHelper.GetLastName())
+                        );
+                        routerMarker.add(marker);
+                        calcDistance();
+                        Log.i("LongClickListener", "Lat : " + point.latitude +
+                                "Log : " + point.longitude);
+                    }
+                }, getApplicationContext());
+            } catch (com.amap.api.services.core.AMapException e) {
+                Log.e("MainActivity", e.toString());
+            }
+
+//            router.add(point);
         }
     };
 
@@ -96,16 +118,20 @@ public class MainActivity extends AppCompatActivity {
             routerView = null;
         }
         double ret = 0.0;
-        for (int i=0; i<router.size() - 1; ++i) {
-            ret += AMapUtils.calculateLineDistance(router.get(i), router.get(i+1));
+        int routerStepSize = routerHelper.GetRouterStepSize();
+        for (int i=0; i<routerStepSize - 1; ++i) {
+            ret += AMapUtils.calculateLineDistance(
+                    routerHelper.GetRouterPoint(i),
+                    routerHelper.GetRouterPoint(i+1)
+            );
         }
 
         if (txtDistance != null) {
 
             txtDistance.setText(String.format("%.4f", ret / 1000.0) + "km");
-            if (router.size() > 1) {
+            if (routerHelper.GetRouterStepSize() > 1) {
                 routerView = aMap.addPolyline(new PolylineOptions().
-                        addAll(router).width(5).color(Color.argb(120, 211, 1, 1)));
+                        addAll(routerHelper.GetSteps()).width(8).color(Color.argb(120, 211, 1, 1)));
             }
         }
 
@@ -116,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.cityName = new String("北京");
-        router = new ArrayList<>();
+        routerHelper = new RouterHelper();
         routerMarker = new ArrayList<>();
         Log.i("MainActivity", "MainActivity OnCreating.");
         requestPermissions();
@@ -130,7 +156,6 @@ public class MainActivity extends AppCompatActivity {
         aMap = mMapView.getMap();
         aMap.setOnMapLongClickListener(onMapLongClickListener);
 
-        btnMyLocation = (Button) findViewById(R.id.btn_location);
         btnRevert = (Button) findViewById(R.id.btn_revert);
         btnClear = (Button) findViewById(R.id.btn_clear);
 
@@ -139,11 +164,26 @@ public class MainActivity extends AppCompatActivity {
         btnRevert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (routerMarker.size() <= 0) return;
+
                 Marker lastMarker = routerMarker.get(routerMarker.size() - 1);
                 routerMarker.remove(routerMarker.size() - 1);
                 lastMarker.destroy();
-                router.remove(router.size() - 1);
+                routerHelper.ReverseLastPoint();
 
+                calcDistance();
+            }
+        });
+
+        btnClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                for (Marker marker : routerMarker) {
+                    marker.destroy();
+                }
+                routerMarker.clear();
+
+                routerHelper.Clear();
                 calcDistance();
             }
         });
@@ -227,15 +267,19 @@ public class MainActivity extends AppCompatActivity {
         //初始化AMapLocationClientOption对象
         mLocationOption = new AMapLocationClientOption();
         //设置定位模式为AMapLocationMode.Hight_Accuracy，高精度模式。
-        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Device_Sensors);
+        //测试时候使用Device_Sensors
+        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
 
         //获取一次定位结果：
         //该方法默认为false。
-        mLocationOption.setOnceLocation(true);
+        mLocationOption.setOnceLocation(false);
 
         //获取最近3s内精度最高的一次定位结果：
-        //设置setOnceLocationLatest(boolean b)接口为true，启动定位时SDK会返回最近3s内精度最高的一次定位结果。如果设置其为true，setOnceLocation(boolean b)接口也会被设置为true，反之不会，默认为false。
-        mLocationOption.setOnceLocationLatest(true);
+        // 设置setOnceLocationLatest(boolean b)接口为true，启动定位时SDK会返回最近3s内精度最高的一次定位结果。
+        // 如果设置其为true，setOnceLocation(boolean b)接口也会被设置为true，反之不会，默认为false。
+        mLocationOption.setOnceLocationLatest(false);
+        // mLocationOption.setInterval(1000);
+        mLocationOption.setNeedAddress(true);
         mLocationOption.setWifiScan(false);
 
         //给定位客户端对象设置定位参数

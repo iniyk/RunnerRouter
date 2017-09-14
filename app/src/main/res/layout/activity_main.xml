@@ -22,14 +22,6 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/btn_location"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:text="我的位置"
-                tools:layout_editor_absoluteX="8dp"
-                tools:layout_editor_absoluteY="16dp" />
-
-            <Button
                 android:id="@+id/btn_revert"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
